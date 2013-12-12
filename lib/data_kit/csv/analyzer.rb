@@ -20,8 +20,8 @@ module DataKit
         @row_count = 0
         @sample_count = 0
 
-        @schema = DataKit::Dataset::Schema.new
-        @metadata = DataKit::Dataset::Metadata.new
+        @schema = Dataset::Schema.new
+        @metadata = Dataset::Metadata.new
 
         # Initialize the schema
         populate_schema_fields!
@@ -84,7 +84,7 @@ module DataKit
 
         headers ||= line.split(',').collect(&:chomp)
         headers.each_with_index  do |header, index|
-          schema.fields << DataKit::Dataset::Field.new(header, :key => keys.include?(index))
+          schema.fields << Dataset::Field.new(header, :key => keys.include?(index))
         end
       end
     end

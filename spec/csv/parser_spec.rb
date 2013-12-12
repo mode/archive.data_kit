@@ -5,6 +5,10 @@ describe DataKit::CSV::Parser do
     data_path('standard.csv')
   }
 
+  let(:crlf_path) {
+    data_path('carriage_returns.csv')
+  }
+
   let(:columns) {
     {
       0 => { 'alias' => 'id' },
@@ -39,6 +43,17 @@ describe DataKit::CSV::Parser do
 
   it "should enumerate rows with an IO path" do
     csv = DataKit::CSV::Parser.new(File.open(path))
+
+    count = 0
+    csv.each_row(columns) do |row|
+      count += 1
+    end
+
+    count.should == 10
+  end
+
+  it "should enumerate rows for lines separated by CRLF" do
+    csv = DataKit::CSV::Parser.new(File.open(crlf_path))
 
     count = 0
     csv.each_row(columns) do |row|

@@ -17,39 +17,13 @@ module DataKit
 
       def execute
         writer = ::CSV.open(path, 'wb')
-
-        # Write the header row
-        header = []
-        analyzer.schema.fields.each do |field|
-          header << field.name
-        end
-        writer << header
+        
+        writer << analyzer.schema.fields.collect(&:name)
 
         csv.each_row(columns) do |row|
-          converted = []
-          
-          analyzer.schema.fields.each do |field|
-            value = row[field.name]
-
-            if value.nil? || field.type == :string || field.type == :empty
-              converted << value.to_s
-            else
-              case field.type
-              when :integer
-                formatted = DataKit::Converters::Number.reformat(value)
-                converted << DataKit::Converters::Integer.convert(formatted)
-              when :number
-                formatted = DataKit::Converters::Number.reformat(value)
-                converted << DataKit::Converters::Number.convert(formatted)
-              when :boolean
-                converted << DataKit::Converters::Boolean.convert(value)
-              when :datetime
-                converted << DataKit::Converters::DateTime.convert(value).strftime("%Y-%m-%dT%H:%M:%SZ")
-              end
-            end
+          writer << analyzer.schema.fields.collect do |field|
+            convert(row[field.name], field.type)
           end
-
-          writer << converted
         end
 
         writer.close
@@ -67,6 +41,25 @@ module DataKit
 
       def columns
         @columns ||= analyzer.schema.parser_columns
+      end
+
+      def convert(value, type)
+        if value.nil? || type == :string || type == :empty
+          return value.to_s
+        else
+          formatted = Converters::Number.reformat(value)
+
+          case type
+          when :integer
+            return Converters::Integer.convert(formatted)
+          when :number
+            return Converters::Number.convert(formatted)
+          when :boolean
+            return Converters::Boolean.convert(value)
+          when :datetime
+            return Converters::DateTime.convert(value).strftime("%Y-%m-%dT%H:%M:%SZ")
+          end
+        end
       end
     end
   end

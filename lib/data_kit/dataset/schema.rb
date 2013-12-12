@@ -1,3 +1,5 @@
+require 'yaml'
+
 module DataKit
   module Dataset
     class Schema
@@ -14,11 +16,7 @@ module DataKit
       def to_yaml
         fields.collect(&:to_hash).to_yaml
       end
-
-      def to_package
-        DataKit::Package::Schema.new(fields.collect(&:to_package))
-      end
-
+      
       def parser_columns
         columns = {}
         fields.each_with_index do |field, position|

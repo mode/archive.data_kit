@@ -22,22 +22,18 @@ module DataKit
         { 'name' => name, 'type' => type.to_s, 'key' => key?}
       end
 
-      def to_package
-        DataKit::Package::Field.new(name, type)
-      end
-
       class << self
         def type?(value)
           return :null if value.nil?
-          reformatted = DataKit::Converters::Number.reformat(value)
+          reformatted = Converters::Number.reformat(value)
 
-          if DataKit::Converters::Integer.match?(reformatted)
+          if Converters::Integer.match?(reformatted)
             :integer
-          elsif DataKit::Converters::Number.match?(reformatted)
+          elsif Converters::Number.match?(reformatted)
             :number
-          elsif DataKit::Converters::Boolean.match?(value)
+          elsif Converters::Boolean.match?(value)
             :boolean
-          elsif DataKit::Converters::DateTime.match?(value)
+          elsif Converters::DateTime.match?(value)
             :datetime
           else
             :string
@@ -46,17 +42,15 @@ module DataKit
 
         def convert(value, type)
           return nil if type == :null || value.nil?
+          reformatted = Converters::Number.reformat(value)
 
           case type
-          when :integer
-            reformatted = DataKit::Converters::Number.reformat(value)
-            DataKit::Converters::Integer.convert(reformatted)
-          when :number
-            reformatted = DataKit::Converters::Number.reformat(value)
-            DataKit::Converters::Number.convert(reformatted)
-          when :boolean   then DataKit::Converters::Boolean.convert(value)
-          when :datetime  then DataKit::Converters::DateTime.convert(value)
-          else value.to_s end
+          when :integer  then Converters::Integer.convert(reformatted)
+          when :number   then Converters::Number.convert(reformatted)
+          when :boolean  then Converters::Boolean.convert(value)
+          when :datetime then Converters::DateTime.convert(value)
+          else value.to_s
+          end
         end
       end
     end
