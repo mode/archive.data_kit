@@ -1,0 +1,11 @@
+id,first_name,last_name,email,country,ip_address,amount,active,activated_at,address
+1,Todd,Hamilton,thamilton@plambee.edu,Norfolk Island,66.157.128.241,$7.72,true,10/3/1955,0582 Dwight Street
+2,Melissa,Kelly,mkelly@twinte.name,Singapore,204.221.167.233,$4.33,false,7/9/2013,06 Cardinal Crossing
+3,Donald,Wheeler,dwheeler@edgeify.mil,Madagascar,34.201.104.193,$2.92,true,12/12/1993,4 Del Sol Hill
+4,Ruby,Hall,rhall@cogilith.com,USSR,237.243.109.67,$8.27,false,12/15/1975,7 Ramsey Avenue
+5,Jessica,Cole,jcole@shuffletag.info,Cyprus,25.40.138.137,$8.16,false,6/2/1939,8142 Novick Hill
+6,Doris,Nelson,dnelson@zoombox.biz,Svalbard and Jan Mayen Islands,233.43.155.229,$6.26,false,5/23/1948,596 Veith Road
+7,Robert,Hansen,rhansen@miboo.edu,Ghana,41.194.33.211,$4.90,true,9/28/1999,529 Oak Pass
+8,Matthew,Freeman,mfreeman@midel.name,Sudan,53.186.162.65,$6.63,false,5/24/1996,70682 Declaration Center
+9,Julia,Nelson,jnelson@skajo.net,Vatican City State (Holy See),249.49.124.178,$9.80,true,1/26/1940,96 Hermina Lane
+10,Wanda,Palmer,wpalmer@ntags.biz,Indonesia,0.200.163.200,$5.89,false,1/1/1959,26837 Donald Trail

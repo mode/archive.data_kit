@@ -17,7 +17,7 @@ module DataKit
 
         def reformat(value)
           if value.is_a?(String)
-            value.tr(',', '').tr('$', '')
+            value.gsub(/(\p{Sc}|\,)/, '')
           else
             value
           end

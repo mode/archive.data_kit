@@ -1,50 +1,50 @@
 require 'spec_helper'
 
 describe DataKit::CSV::Parser do
+  let(:path) {
+    data_path('standard.csv')
+  }
+
+  let(:columns) {
+    {
+      0 => { 'alias' => 'id' },
+      1 => { 'alias' => 'first_name' },
+      2 => { 'alias' => 'last_name' },
+      3 => { 'alias' => 'email' },
+      4 => { 'alias' => 'country' },
+      5 => { 'alias' => 'ip_address' },
+      6 => { 'alias' => 'amount' },
+      7 => { 'alias' => 'active' },
+      8 => { 'alias' => 'activated_at' },
+      9 => { 'alias' => 'address' }
+    }
+  }
+
   it "should initialize" do
-    path = csv_path('espn_draft.csv')
     csv = DataKit::CSV::Parser.new(path)
 
     csv.path.should == path
   end
 
   it "should enumerate rows with a string path" do
-    path = csv_path('espn_draft.csv')
     csv = DataKit::CSV::Parser.new(path)
-
-    columns = {
-      0 => { 'alias' => 'draft_order' },
-      1 => { 'alias' => 'player' },
-      2 => { 'alias' => 'position' },
-      3 => { 'alias' => 'avg_draft_position' },
-      4 => { 'alias' => 'avg_bid_value' }
-    }
 
     count = 0
     csv.each_row(columns) do |row|
       count += 1
     end
 
-    count.should == 472
+    count.should == 10
   end
 
   it "should enumerate rows with an IO path" do
-    path = csv_path('espn_draft.csv')
     csv = DataKit::CSV::Parser.new(File.open(path))
-
-    columns = {
-      0 => { 'alias' => 'draft_order' },
-      1 => { 'alias' => 'player' },
-      2 => { 'alias' => 'position' },
-      3 => { 'alias' => 'avg_draft_position' },
-      4 => { 'alias' => 'avg_bid_value' }
-    }
 
     count = 0
     csv.each_row(columns) do |row|
       count += 1
     end
 
-    count.should == 472
+    count.should == 10
   end
 end
