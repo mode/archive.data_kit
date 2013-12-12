@@ -1,4 +1,4 @@
-data_tools
+Data Kit
 ==========
 
-Library for ingesting, analyzing and cleaning static datasets
+Library for ingesting, analyzing and cleaning normalizing datasets
