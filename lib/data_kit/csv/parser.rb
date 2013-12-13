@@ -4,32 +4,51 @@ module DataKit
   module CSV
     class Parser
       # Encode streams from BINARY into UTF-8
-      InternalEncoding = Encoding.find("UTF-8")
-      ExternalEncoding = Encoding.find("BINARY")
+      InternalEnc = Encoding.find("UTF-8")
+      ExternalEnc = Encoding.find("BINARY")
 
-      attr_accessor :path
-      attr_accessor :options
+      attr_reader :path
+      attr_reader :handle
+      attr_reader :headers
 
-      def initialize(path, options = {})
+      def initialize(path)
         @path = path
-        @options = options
+        
+        set_handle
+        set_headers
       end
 
-      def each_row(columns, &block)
-        if path.is_a?(IO)
-          path.rewind # make sure we can re-enter here
-          path.set_encoding(ExternalEncoding, InternalEncoding)
-          ::Rcsv.parse(path, :headers => :skip, :columns => columns, :row_as_hash => true).each do |row|
-            yield row
-          end
-        elsif path.is_a?(String)
-          handle = File.open(path)
-          handle.set_encoding(ExternalEncoding, InternalEncoding)
-
-          ::Rcsv.parse(handle, :headers => :skip, :columns => columns, :row_as_hash => true) do |row|
-            yield row
-          end
+      def each_row(&block)
+        handle.rewind
+        Rcsv.parse(handle, :header => :skip, :columns => columns, :row_as_hash => true) do |row|
+          yield row
         end
+      end
+
+      private
+
+      def columns
+        index = -1
+        @columns ||= headers.inject({}) do |result, field_name|
+          index += 1
+          result[index] = { :alias => field_name }
+          result
+        end
+      end
+
+      def set_handle
+        if path.is_a?(IO)
+          @handle = path
+        else
+          @handle = File.open(path)
+        end
+
+        @handle.set_encoding(ExternalEnc, InternalEnc)
+      end
+
+      def set_headers
+        handle.rewind
+        Rcsv.parse(handle, :header => :none) { |row| @headers = row; break }
       end
     end
   end

@@ -9,21 +9,6 @@ describe DataKit::CSV::Parser do
     data_path('carriage_returns.csv')
   }
 
-  let(:columns) {
-    {
-      0 => { 'alias' => 'id' },
-      1 => { 'alias' => 'first_name' },
-      2 => { 'alias' => 'last_name' },
-      3 => { 'alias' => 'email' },
-      4 => { 'alias' => 'country' },
-      5 => { 'alias' => 'ip_address' },
-      6 => { 'alias' => 'amount' },
-      7 => { 'alias' => 'active' },
-      8 => { 'alias' => 'activated_at' },
-      9 => { 'alias' => 'address' }
-    }
-  }
-
   it "should initialize" do
     csv = DataKit::CSV::Parser.new(path)
 
@@ -34,7 +19,7 @@ describe DataKit::CSV::Parser do
     csv = DataKit::CSV::Parser.new(path)
 
     count = 0
-    csv.each_row(columns) do |row|
+    csv.each_row do |row|
       count += 1
     end
 
@@ -45,7 +30,7 @@ describe DataKit::CSV::Parser do
     csv = DataKit::CSV::Parser.new(File.open(path))
 
     count = 0
-    csv.each_row(columns) do |row|
+    csv.each_row do |row|
       count += 1
     end
 
@@ -56,7 +41,7 @@ describe DataKit::CSV::Parser do
     csv = DataKit::CSV::Parser.new(File.open(crlf_path))
 
     count = 0
-    csv.each_row(columns) do |row|
+    csv.each_row do |row|
       count += 1
     end
 

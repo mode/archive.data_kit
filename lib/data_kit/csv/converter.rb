@@ -5,43 +5,39 @@ module DataKit
     class Converter
 
       attr_accessor :csv
-      attr_accessor :analyzer
-      attr_accessor :path
+      attr_accessor :analysis
+      attr_accessor :output_path
 
-      def initialize(csv, analyzer, path)
+      def initialize(csv, analysis, output_path)
         @csv = csv
-        @analyzer = analyzer
-
-        @path = File.expand_path(path) # output path
+        @analysis = analysis
+        @output_path = File.expand_path(output_path)
       end
 
       def execute
-        writer = ::CSV.open(path, 'wb')
-        
-        writer << analyzer.schema.fields.collect(&:name)
-
-        csv.each_row(columns) do |row|
-          writer << analyzer.schema.fields.collect do |field|
-            convert(row[field.name], field.type)
+        ::CSV.open(output_path, 'wb') do |writer|
+          writer << csv.headers
+          csv.each_row do |row|
+            writer << csv.headers.collect do |field_name|
+              convert(row[field_name], field_types[field_name])
+            end
           end
         end
+      end
 
-        writer.close
+      def field_types
+        @field_types ||= analysis.field_types
       end
 
       class << self
-        def convert(csv, analyzer, path)
-          converter = new(csv, analyzer, path)
+        def convert(csv, analysis, output_path)
+          converter = new(csv, analysis, output_path)
           converter.execute
           converter
         end
       end
 
       private
-
-      def columns
-        @columns ||= analyzer.schema.parser_columns
-      end
 
       def convert(value, type)
         if value.nil? || type == :string || type == :empty

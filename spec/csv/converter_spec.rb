@@ -14,8 +14,8 @@ describe DataKit::CSV::Converter do
   }
 
   it "should initialize and execute" do
-    analyzer = DataKit::CSV::Analyzer.analyze(csv, :sample_rate => 1)
-    converter = DataKit::CSV::Converter.new(csv, analyzer, target)
+    analysis = DataKit::CSV::Analyzer.analyze(csv, :sample_rate => 1)
+    converter = DataKit::CSV::Converter.new(csv, analysis, target)
 
     converter.execute
 
@@ -25,8 +25,8 @@ describe DataKit::CSV::Converter do
   end
 
   it "should convert using the convience method" do
-    analyzer = DataKit::CSV::Analyzer.analyze(csv, :sample_rate => 1)
-    converter = DataKit::CSV::Converter.convert(csv, analyzer, target)
+    analysis = DataKit::CSV::Analyzer.analyze(csv, :sample_rate => 1)
+    converter = DataKit::CSV::Converter.convert(csv, analysis, target)
 
     row_count = 0
     CSV.open(target).each { |row| row_count += 1 }
