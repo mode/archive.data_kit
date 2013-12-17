@@ -32,8 +32,6 @@ describe DataKit::CSV::SchemaAnalyzer do
   it "should execute an analysis" do
     analysis = DataKit::CSV::SchemaAnalyzer.new(csv, :sampling_rate => 0.5).execute
 
-    puts analysis.inspect
-
     analysis.type?('id').should == :integer
     analysis.type?('first_name').should == :string
     analysis.type?('last_name').should == :string

@@ -17,7 +17,7 @@ module DataKit
         random = Random.new
 
         field_name = csv.headers[field_pos]
-        analysis = TypeMatchAnalysis.new(field_name, { :match_type => match_type })
+        analysis = FieldAnalysis.new(field_name, { :match_type => match_type })
 
         csv.each_row do |row|
           analysis.increment_total

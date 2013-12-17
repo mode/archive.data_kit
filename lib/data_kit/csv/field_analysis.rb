@@ -16,6 +16,10 @@ module DataKit
         @row_count, @sample_count = 0, 0
 
         @match_type = options[:match_type] || :any
+
+        Dataset::Field::Types.each do |type|
+          @types[type] = []
+        end
       end
 
       def increment_total
@@ -36,10 +40,40 @@ module DataKit
         end
       end
 
+      def type?
+        if has_single_type?
+          type_list.first
+        elsif has_only_numeric_types?
+          :number
+        else
+          :string
+        end
+      end
+
+      def value_at(row_num)
+        @values[row_num]
+      end
+
+      def type_count(type)
+        types[type].length
+      end
+
+      def type_list
+        types.keys.select{ |type| @types[type].length > 0 }
+      end
+
+      def has_single_type?
+        type_list.length == 1
+      end
+
+      def has_only_numeric_types?
+        (type_list - [:integer, :number, :null]).length == 0
+      end
+
     private
       def insert_value_with_type(value, type)
         @values[row_count] = value
-        @types[row_count]  = type
+        @types[type] << row_count
       end
     end
   end
