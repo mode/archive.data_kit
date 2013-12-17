@@ -15,10 +15,10 @@ module DataKit
 
         @type_hints = {}
 
-        if options[:use_type_hints].nil? || options[:use_type_hints] == false
-          @use_type_hints = false
-        else
+        if options[:use_type_hints].nil? || options[:use_type_hints] == true
           @use_type_hints = true
+        else
+          @use_type_hints = false
         end
 
         fields.each do |field_name|

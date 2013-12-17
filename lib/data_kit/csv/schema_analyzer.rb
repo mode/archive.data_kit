@@ -4,16 +4,23 @@ module DataKit
       attr_accessor :csv
       attr_accessor :keys
       attr_accessor :sampling_rate
-      
+      attr_accessor :use_type_hints
+
       def initialize(csv, options = {})
         @csv = csv
         @keys = options[:keys] || []
         @sampling_rate = options[:sampling_rate] || 0.1
+
+        if options[:use_type_hints].nil? || options[:use_type_hints] == true
+          @use_type_hints = true
+        else
+          @use_type_hints = false
+        end
       end
 
       def execute
         random = Random.new
-        analysis = SchemaAnalysis.new(csv.headers)
+        analysis = SchemaAnalysis.new(csv.headers, :use_type_hints => use_type_hints)
 
         csv.each_row do |row|
           analysis.increment_total

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    data_kit (0.0.4)
+    data_kit (0.0.6)
       rcsv
       timeliness
 
