@@ -1,9 +1,15 @@
 require "data_kit/version"
 
-# Data I/O
+# Parsers
 require 'data_kit/csv/parser'
-require 'data_kit/csv/analyzer'
-require 'data_kit/csv/analysis'
+
+# Analyzers
+require 'data_kit/csv/field_analyzer'
+require 'data_kit/csv/field_analysis'
+require 'data_kit/csv/schema_analyzer'
+require 'data_kit/csv/schema_analysis'
+
+# Converters
 require 'data_kit/csv/converter'
 
 # Data Conversion

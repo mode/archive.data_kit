@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe DataKit::CSV::Analysis do  
+describe DataKit::CSV::SchemaAnalysis do  
   it "should insert a row for analysis" do
-    analysis = DataKit::CSV::Analysis.new(['field1'])
+    analysis = DataKit::CSV::SchemaAnalysis.new(['field1'])
 
     analysis.insert 'field1', '1.0'
     analysis.insert 'field1', '2.0'
@@ -11,7 +11,7 @@ describe DataKit::CSV::Analysis do
   end
 
   it "should know the number of rows with a particular type" do
-    analysis = DataKit::CSV::Analysis.new(['field1'])
+    analysis = DataKit::CSV::SchemaAnalysis.new(['field1'])
 
     analysis.insert 'field1', '1.0'
     analysis.insert 'field1', '2.0'
@@ -20,7 +20,7 @@ describe DataKit::CSV::Analysis do
   end
 
   it "should determine the type of a field" do
-    analysis = DataKit::CSV::Analysis.new(['field1', 'field2'])
+    analysis = DataKit::CSV::SchemaAnalysis.new(['field1', 'field2'])
 
     analysis.insert 'field1', '1.0'
     analysis.insert 'field1', '2.0'
@@ -32,7 +32,7 @@ describe DataKit::CSV::Analysis do
   end
 
   it "should infer a string type if there non-numeric mixed types" do
-    analysis = DataKit::CSV::Analysis.new(['field1', 'field2'])
+    analysis = DataKit::CSV::SchemaAnalysis.new(['field1', 'field2'])
 
     analysis.insert 'field1', '1.0'
     analysis.insert 'field1', '2.0'
@@ -44,7 +44,7 @@ describe DataKit::CSV::Analysis do
   end
 
   it "should infer a number type if there are mixed numeric types" do
-    analysis = DataKit::CSV::Analysis.new(['field1'])
+    analysis = DataKit::CSV::SchemaAnalysis.new(['field1'])
 
     analysis.insert 'field1', '1.0'
     analysis.insert 'field1', '20'

@@ -1,6 +1,6 @@
 module DataKit
   module CSV
-    class Analysis
+    class SchemaAnalysis
       attr_reader :fields
       attr_reader :types
       attr_reader :row_count

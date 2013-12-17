@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DataKit::CSV::Analyzer do
+describe DataKit::CSV::SchemaAnalyzer do
   let(:path) {
     data_path('standard.csv')
   }
@@ -14,23 +14,23 @@ describe DataKit::CSV::Analyzer do
   }
 
   it "should initialize" do
-    analyzer = DataKit::CSV::Analyzer.new(csv)
+    analyzer = DataKit::CSV::SchemaAnalyzer.new(csv)
 
     analyzer.csv.should == csv
     analyzer.keys.should == []
-    analyzer.sample_rate.should == 0.1
+    analyzer.sampling_rate.should == 0.1
   end
 
   it "should initialize schema with an IO" do
-    analyzer = DataKit::CSV::Analyzer.new(iocsv)
+    analyzer = DataKit::CSV::SchemaAnalyzer.new(iocsv)
 
     analyzer.csv.should == iocsv
     analyzer.keys.should == []
-    analyzer.sample_rate.should == 0.1
+    analyzer.sampling_rate.should == 0.1
   end
 
   it "should execute an analysis" do
-    analysis = DataKit::CSV::Analyzer.new(csv, :sample_rate => 0.5).execute
+    analysis = DataKit::CSV::SchemaAnalyzer.new(csv, :sampling_rate => 0.5).execute
 
     puts analysis.inspect
 
@@ -49,8 +49,8 @@ describe DataKit::CSV::Analyzer do
     analysis.sample_count.should be < 10
   end
 
-  it "should calculate a sample_rate" do
-    DataKit::CSV::Analyzer.sample_rate(1024).should == 1
-    DataKit::CSV::Analyzer.sample_rate(2048 * 2048).should be < 1
+  it "should calculate a sampling_rate" do
+    DataKit::CSV::SchemaAnalyzer.sampling_rate(1024).should == 1
+    DataKit::CSV::SchemaAnalyzer.sampling_rate(2048 * 2048).should be < 1
   end
 end
