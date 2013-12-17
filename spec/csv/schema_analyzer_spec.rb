@@ -58,7 +58,28 @@ describe DataKit::CSV::SchemaAnalyzer do
   end
 
   it "should execute an analysis without type hints" do
-    analysis = DataKit::CSV::SchemaAnalyzer.new(csv, :sampling_rate => 0.5, :use_type_hints => false).execute
+    analysis = DataKit::CSV::SchemaAnalyzer.new(csv,
+                :sampling_rate => 0.5, :use_type_hints => false).execute
+
+    analysis.type?('id').should == :integer
+    analysis.type?('first_name').should == :string
+    analysis.type?('last_name').should == :string
+    analysis.type?('email').should == :string
+    analysis.type?('country').should == :string
+    analysis.type?('ip_address').should == :string
+    analysis.type?('amount').should == :number
+    analysis.type?('active').should == :boolean
+    analysis.type?('activated_at').should == :datetime
+    analysis.type?('address').should == :string
+
+    analysis.row_count.should == 10
+    analysis.sample_count.should be < 10
+    analysis.use_type_hints.should == false
+  end
+
+  it "should execute an analysis with the convenience method" do
+    analysis = DataKit::CSV::SchemaAnalyzer.analyze(csv,
+                :sampling_rate => 0.5, :use_type_hints => false)
 
     analysis.type?('id').should == :integer
     analysis.type?('first_name').should == :string

@@ -40,7 +40,8 @@ module DataKit
         def analyze(csv, options = {})
           analyzer = new(csv,
             :keys => options[:keys],
-            :sampling_rate => options[:sampling_rate]
+            :sampling_rate => options[:sampling_rate],
+            :use_type_hints => options[:use_type_hints]
           )
 
           analyzer.execute
