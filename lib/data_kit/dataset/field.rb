@@ -23,8 +23,13 @@ module DataKit
       end
 
       class << self
-        def type?(value)
+        def type?(value, hint_type = nil)
           return :null if value.nil?
+
+          if hint_type && is_type?(value, hint_type)
+            return hint_type
+          end
+
           reformatted = Converters::Number.reformat(value)
 
           if Converters::Integer.match?(reformatted)
@@ -37,6 +42,16 @@ module DataKit
             :datetime
           else
             :string
+          end
+        end
+
+        def is_type?(value, type)
+          case type
+          when :integer  then Converters::Integer.match?(Converters::Number.reformat(value))
+          when :number   then Converters::Number.match?(Converters::Number.reformat(value))
+          when :boolean  then Converters::Boolean.match?(value)
+          when :datetime then Converters::DateTime.match?(value)
+          when :string   then false
           end
         end
 

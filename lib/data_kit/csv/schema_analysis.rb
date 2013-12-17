@@ -6,12 +6,24 @@ module DataKit
       attr_reader :row_count
       attr_reader :sample_count
 
-      def initialize(fields)
+      attr_reader :type_hints
+      attr_reader :use_type_hints
+
+      def initialize(fields, options = {})
         @fields, @types = fields, {}
         @row_count, @sample_count = 0, 0
 
+        @type_hints = {}
+
+        if options[:use_type_hints].nil? || options[:use_type_hints] == false
+          @use_type_hints = false
+        else
+          @use_type_hints = true
+        end
+
         fields.each do |field_name|
           @types[field_name] = {}
+          @type_hints[field_name] = :string
           Dataset::Field::Types.each do |type|
             @types[field_name][type] = 0
           end
@@ -27,7 +39,14 @@ module DataKit
       end
 
       def insert(field_name, value)
-        @types[field_name][Dataset::Field.type?(value)] += 1
+        if use_type_hints
+          type = Dataset::Field.type?(value, type_hints[field_name])
+          @type_hints[field_name] = type # cache the most recent type
+        else
+          type = Dataset::Field.type?(value)
+        end
+
+        @types[field_name][type] += 1
       end
 
       def field_types
