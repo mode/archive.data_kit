@@ -9,6 +9,10 @@ describe DataKit::CSV::Parser do
     data_path('carriage_returns.csv')
   }
 
+  let(:vc_companies_path) {
+    data_path('vc_backed_companies.csv')
+  }
+
   it "should initialize" do
     csv = DataKit::CSV::Parser.new(path)
 
@@ -46,5 +50,16 @@ describe DataKit::CSV::Parser do
     end
 
     count.should == 10
+  end
+
+  it "should parse CSVs with unknown encodings" do
+    csv = DataKit::CSV::Parser.new(File.open(vc_companies_path))
+
+    count = 0
+    csv.each_row do |row|
+      count += 1
+    end
+
+    count.should == 2
   end
 end
