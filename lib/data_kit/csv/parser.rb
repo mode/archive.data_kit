@@ -3,10 +3,6 @@ require 'rcsv'
 module DataKit
   module CSV
     class Parser
-      # Encode streams from BINARY into UTF-8
-      InternalEnc = Encoding.find("UTF-8")
-      ExternalEnc = Encoding.find("BINARY")
-
       attr_reader :path
       attr_reader :handle
       attr_reader :headers
@@ -43,7 +39,7 @@ module DataKit
           @handle = File.open(path)
         end
 
-        @handle.set_encoding(ExternalEnc, InternalEnc)
+        @handle.set_encoding(Encoding.find("UTF-8"))
       end
 
       def set_headers
