@@ -17,10 +17,14 @@ module DataKit
 
         def reformat(value)
           if value.is_a?(String)
-            value.gsub(/(\p{Sc}|\,)/, '')
+            value.encode('UTF-8', encoding_opts).gsub(/(\p{Sc}|\,)/, '')
           else
             value
           end
+        end
+
+        def encoding_opts
+          {:invalid => :replace, :undef => :replace, :replace => '?'}
         end
       end
     end

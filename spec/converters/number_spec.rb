@@ -17,4 +17,9 @@ describe DataKit::Converters::Integer do
       DataKit::Converters::Number.convert(reformatted).should == result
     end
   end
+
+  it "should reformat strings with unknown encodings" do
+    str = "9350 Waxie WayÊSuite"
+    DataKit::Converters::Number.reformat(str).should == str
+  end
 end

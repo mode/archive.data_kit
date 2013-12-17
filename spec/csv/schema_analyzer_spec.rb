@@ -52,9 +52,6 @@ describe DataKit::CSV::SchemaAnalyzer do
     analysis.row_count.should == 10
     analysis.sample_count.should be < 10
     analysis.use_type_hints.should == true
-
-    puts analysis.type_hints.inspect
-
   end
 
   it "should execute an analysis without type hints" do

@@ -17,6 +17,10 @@ describe DataKit::CSV::Converter do
     DataKit::CSV::Parser.new(data_path('utf8.csv'))
   }
 
+  let(:asciicsv) {
+    DataKit::CSV::Parser.new(data_path('vc_backed_companies.csv'))
+  }
+
   it "should initialize and execute" do
     analysis = DataKit::CSV::SchemaAnalyzer.analyze(csv, :sampling_rate => 1)
     converter = DataKit::CSV::Converter.new(csv, analysis, target)
@@ -39,6 +43,17 @@ describe DataKit::CSV::Converter do
 
   it "should convert rows with utf8 characters" do
     analysis = DataKit::CSV::SchemaAnalyzer.analyze(utf8csv, :sampling_rate => 1)
+    converter = DataKit::CSV::Converter.new(csv, analysis, target)
+
+    converter.execute
+
+    row_count = 0
+    CSV.open(target).each { |row| row_count += 1 }
+    row_count.should == 11
+  end
+
+  it "should convert rows with invalid UTF-8 characters" do
+    analysis = DataKit::CSV::SchemaAnalyzer.analyze(asciicsv, :sampling_rate => 1)
     converter = DataKit::CSV::Converter.new(csv, analysis, target)
 
     converter.execute

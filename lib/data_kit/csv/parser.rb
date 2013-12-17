@@ -17,7 +17,6 @@ module DataKit
       def each_row(&block)
         handle.rewind
         Rcsv.parse(handle, :header => :skip, :columns => columns, :row_as_hash => true) do |row|
-          puts row.inspect
           yield row
         end
       end

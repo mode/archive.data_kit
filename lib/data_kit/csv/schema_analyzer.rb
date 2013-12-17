@@ -27,7 +27,6 @@ module DataKit
           if random.rand <= sampling_rate
             analysis.increment_sample
             row.keys.each do |field_name|
-              row[field_name].force_encoding('UTF-8')
               analysis.insert(field_name.to_s, row[field_name])
             end
           end
