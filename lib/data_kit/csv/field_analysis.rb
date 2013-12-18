@@ -63,7 +63,7 @@ module DataKit
       end
 
       def has_single_type?
-        type_list.length == 1
+        (type_list - [:null]).length == 1
       end
 
       def has_only_numeric_types?

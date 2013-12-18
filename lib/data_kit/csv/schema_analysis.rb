@@ -77,7 +77,7 @@ module DataKit
       end
 
       def has_single_type?(field)
-        type_list(field).length == 1
+        (type_list(field) - [:null]).length == 1
       end
 
       def has_only_numeric_types?(field)
