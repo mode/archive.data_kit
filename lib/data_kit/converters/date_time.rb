@@ -14,6 +14,7 @@ module DataKit
 
         # Additional Date/Time Formats
         Timeliness.add_formats(:datetime, "yyyy-m-dTh:nn:ss")
+        Timeliness.add_formats(:datetime, "yyyy-m-dTh:nn:ssZ")
         Timeliness.add_formats(:datetime, "m/d/yy h:nn:ss.u ampm")
       end
     end
