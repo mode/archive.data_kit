@@ -16,11 +16,15 @@ module DataKit
 
       def execute
         ::CSV.open(output_path, 'wb') do |writer|
-          writer << csv.headers
+          first = true
+          converted = []
           csv.each_row do |row|
-            writer << csv.headers.collect do |field_name|
-              convert(row[field_name], field_types[field_name])
+            if first
+              first = false
+              writer << csv.headers
             end
+            
+            writer << convert_row(csv.headers, row)
           end
         end
       end
@@ -39,7 +43,15 @@ module DataKit
 
       private
 
-      def convert(value, type)
+      def convert_row(headers, row)
+        converted = []
+        headers.each_with_index do |field_name, index|
+          converted << convert_value(row[index], field_types[field_name])
+        end
+        converted
+      end
+
+      def convert_value(value, type)
         if value.nil? || type == :string || type == :empty
           return value.to_s
         else

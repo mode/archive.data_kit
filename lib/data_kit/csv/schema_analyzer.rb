@@ -19,15 +19,21 @@ module DataKit
       end
 
       def execute
+        first = true
+        analysis = nil
         random = Random.new
-        analysis = SchemaAnalysis.new(csv.headers, :use_type_hints => use_type_hints)
 
         csv.each_row do |row|
+          if first
+            first = false
+            analysis = SchemaAnalysis.new(csv.headers, :use_type_hints => use_type_hints)
+          end
+
           analysis.increment_total
           if random.rand <= sampling_rate
             analysis.increment_sample
-            row.keys.each do |field_name|
-              analysis.insert(field_name.to_s, row[field_name])
+            row.each_with_index do |value, index|
+              analysis.insert(csv.headers[index].to_s, value)
             end
           end
         end

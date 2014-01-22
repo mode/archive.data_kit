@@ -19,7 +19,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Runtime Dependencies
-  spec.add_runtime_dependency "rcsv"
   spec.add_runtime_dependency "timeliness"
 
   # Development Dependencies

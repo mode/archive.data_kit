@@ -14,16 +14,21 @@ module DataKit
       end
 
       def execute
+        first = true
+        analysis = nil
         random = Random.new
 
-        field_name = csv.headers[field_pos]
-        analysis = FieldAnalysis.new(field_name, { :match_type => match_type })
-
         csv.each_row do |row|
+          if first
+            first = false
+            field_name = csv.headers[field_pos]
+            analysis = FieldAnalysis.new(field_name, { :match_type => match_type })
+          end
+
           analysis.increment_total
           if random.rand <= sampling_rate
             analysis.increment_sample
-            analysis.insert(row[field_name])
+            analysis.insert(row[field_pos])
           end
         end
 

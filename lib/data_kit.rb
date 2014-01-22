@@ -21,6 +21,3 @@ require 'data_kit/converters/date_time'
 # Datasets
 require 'data_kit/dataset/field'
 require 'data_kit/dataset/schema'
-
-# Patches / Fixes
-require 'data_kit/patches/rcsv'

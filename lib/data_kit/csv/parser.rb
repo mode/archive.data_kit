@@ -1,4 +1,4 @@
-require 'rcsv'
+require 'csv'
 
 module DataKit
   module CSV
@@ -9,28 +9,24 @@ module DataKit
 
       def initialize(path)
         @path = path
-        
-        set_handle
-        set_headers
+        set_handle      
       end
 
       def each_row(&block)
+        first = true
         handle.rewind
-        Rcsv.parse(handle, :header => :skip, :columns => columns, :row_as_hash => true) do |row|
-          yield row
+        
+        ::CSV.parse(handle, converters: nil) do |row|
+          if first == true
+            first = false
+            @headers = row
+          else
+            yield row
+          end
         end
       end
 
       private
-
-      def columns
-        index = -1
-        @columns ||= headers.inject({}) do |result, field_name|
-          index += 1
-          result[index] = { :alias => field_name }
-          result
-        end
-      end
 
       def set_handle
         if path.is_a?(IO)
@@ -43,11 +39,6 @@ module DataKit
           Encoding.find("BINARY"), Encoding.find("UTF-8"),
           {:invalid => :replace, :undef => :replace, :replace => ''}
         )
-      end
-
-      def set_headers
-        handle.rewind
-        Rcsv.parse(handle, :header => :none) { |row| @headers = row; break }
       end
     end
   end
