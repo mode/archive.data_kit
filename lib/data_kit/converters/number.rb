@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module DataKit
   module Converters
     class Number
